@@ -1,0 +1,14 @@
+name: Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: emirdeliz/cpp-opencv-node-emscripten:latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - uses: ./.github/actions
+      - run:  yarn build && yarn build:webassembly
