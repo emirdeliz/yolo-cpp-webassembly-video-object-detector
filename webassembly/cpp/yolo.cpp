@@ -34,9 +34,8 @@ char *convert_int_to_char_array(int i)
 vector<Mat> pre_process(Mat &input_image)
 {
 	// Convert to blob.
-	Net net = readNet("yolov5s.onnx");
-	net.setPreferableBackend(DNN_BACKEND_OPENCV);
-	
+	Net net = readNetFromONNX("yolov5s.onnx");
+
 	Mat blob;
 	blobFromImage(input_image, blob, 1. / 255., Size(INPUT_WIDTH, INPUT_HEIGHT), Scalar(), true, false);
 
