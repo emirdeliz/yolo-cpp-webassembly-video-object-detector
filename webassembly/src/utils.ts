@@ -36,30 +36,32 @@ const loadImage = async (imgBlob: Blob) => {
   return promise;
 };
 
-export const processImages = async (imgBlob: Blob, templBlob: Blob) => {
+export const processImages = async (imgBlob: Blob) => {
   const img = await loadImage(imgBlob);
-  const templ = await loadImage(templBlob);
   const imgUint = passToWasm(new Uint8Array(img.data.buffer));
-  const templUint = passToWasm(new Uint8Array(templ.data.buffer));
 
-  try {
-    const resultPtr = Module._check_image(
+  // try {
+    const result = new Float64Array();
+    const resultPtr = Module._detectObjects(
       imgUint.byteOffset,
       img.width,
       img.height,
-      templUint.byteOffset,
-      templ.width,
-      templ.height
+      result
     );
 
-    const result = new Int32Array(Module.asm.memory.buffer, resultPtr, 4);
+    console.log({ resultPtr })
+
+    // const result = new Int32Array(Module.asm.memory.buffer, resultPtr, 4);
+
+    console.log({ result })
+
     return {
-      x: result[0] - templ.width,
+      x: result[0],
       width: result[1],
-      y: result[2] - templ.height,
+      y: result[2],
       height: result[3],
     };
-  } catch (e) {
-    console.log({ e });
-  }
+  // } catch (e) {
+  //   console.error({ e });
+  // }
 };

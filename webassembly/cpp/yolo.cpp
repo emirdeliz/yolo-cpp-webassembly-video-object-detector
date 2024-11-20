@@ -1,168 +1,89 @@
-// Include Libraries.
-#include <opencv2/opencv.hpp>
-#include <fstream>
-#include <cstring>
-#include <string>
 #include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/dnn.hpp>
+#include <vector>
+#include <cstdlib>
 #include "emscripten.h"
 
-// Namespaces.
-using namespace cv;
-using namespace std;
-using namespace cv::dnn;
-
-// Constants.
-const float INPUT_WIDTH = 640.0;
-const float INPUT_HEIGHT = 640.0;
-const float SCORE_THRESHOLD = 0.5;
-const float NMS_THRESHOLD = 0.45;
-const float CONFIDENCE_THRESHOLD = 0.45;
-
-char *convert_string_to_char_array(string s)
+// Define struct to represent a bounding box
+struct BoundingBox
 {
-	char *cstr = new char[s.length() + 1];
-	strcpy(cstr, s.c_str());
-	return cstr;
-}
+	float x, y, width, height;
+	int class_label;
+};
 
-char *convert_int_to_char_array(int i)
+// Function to perform object detection using YOLO
+std::vector<BoundingBox> perform_yolo_detection(const cv::Mat &image)
 {
-	string s = to_string(i);
-	return convert_string_to_char_array(s);
-}
+	std::vector<BoundingBox> detected_objects;
+	
+	// Load YOLO model configuration and weights
+	cv::dnn::Net net = cv::dnn::readNet("yolov3.weights", "yolov3.cfg", "darknet");
 
-vector<Mat> pre_process(Mat &input_image)
-{
-	// Convert to blob.
-	Net net = readNetFromONNX("yolov5s.onnx");
+	// Specify target device (CPU or GPU)
+	net.setPreferableBackend(cv::dnn::DNN_BACKEND_DEFAULT);
+	net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU); // or DNN_TARGET_OPENCL for GPU
 
-	Mat blob;
-	blobFromImage(input_image, blob, 1. / 255., Size(INPUT_WIDTH, INPUT_HEIGHT), Scalar(), true, false);
+	// Preprocess image (resize, normalize, etc.)
+	cv::Mat blob = cv::dnn::blobFromImage(
+		image, 1.0 / 255.0,
+		cv::Size(416, 416),
+		cv::Scalar(0, 0, 0),
+		true,
+		false
+	);
 
+	// Set input blob
 	net.setInput(blob);
 
-	// Forward propagate.
-	vector<Mat> outputs;
-	net.forward(outputs, net.getUnconnectedOutLayersNames());
+	// Forward pass
+	cv::Mat detectionMat = net.forward();
 
-	return outputs;
-}
+	// Process detection results
+	// Iterate through detectionMat and extract bounding boxes, confidence scores, and class labels
+	// Placeholder code: generate dummy bounding boxes for demonstration
+	BoundingBox bbox1;
+	bbox1.x = 0.1f;
+	bbox1.y = 0.2f;
+	bbox1.width = 0.3f;
+	bbox1.height = 0.4f;
+	bbox1.class_label = 0;
 
-char * post_process(Mat &input_image)
-{
-	// Load model.
-	vector<Mat> outputs = pre_process(input_image);
+	BoundingBox bbox2;
+	bbox2.x = 0.5f;
+	bbox2.y = 0.6f;
+	bbox2.width = 0.2f;
+	bbox2.height = 0.3f;
+	bbox2.class_label = 1;
 
-	// Load class list.
-	vector<string> class_name;
-	ifstream ifs("coco.names");
-	string line;
-
-	while (getline(ifs, line))
-	{
-		class_name.push_back(line);
-	}
-
-	// // Initialize vectors to hold respective outputs while unwrapping detections.
-	// vector<int> class_ids;
-	// vector<float> confidences;
-	// vector<Rect> boxes;
-
-	// // Resizing factor.
-	// float x_factor = input_image.cols / INPUT_WIDTH;
-	// float y_factor = input_image.rows / INPUT_HEIGHT;
-
-	// float *data = (float *)outputs[0].data;
-
-	// const int dimensions = 85;
-	// const int rows = 25200;
+	detected_objects.push_back(bbox1);
+	detected_objects.push_back(bbox2);
 	
-	// // Iterate through 25200 detections.
-	// for (int i = 0; i < rows; ++i)
-	// {
-	// 	float confidence = data[4];
-	// 	// Discard bad detections and continue.
-	// 	if (confidence >= CONFIDENCE_THRESHOLD)
-	// 	{
-	// 		float *classes_scores = data + 5;
-	// 		// Create a 1x85 Mat and store class scores of 80 classes.
-	// 		Mat scores(1, class_name.size(), CV_32FC1, classes_scores);
-	// 		// Perform minMaxLoc and acquire index of best class score.
-	// 		Point class_id;
-	// 		double max_class_score;
-	// 		minMaxLoc(scores, 0, &max_class_score, 0, &class_id);
-	// 		// Continue if the class score is above the threshold.
-	// 		if (max_class_score > SCORE_THRESHOLD)
-	// 		{
-	// 			// Store class ID and confidence in the pre-defined respective vectors.
-
-	// 			confidences.push_back(confidence);
-	// 			class_ids.push_back(class_id.x);
-
-	// 			// Center.
-	// 			float cx = data[0];
-	// 			float cy = data[1];
-	// 			// Box dimension.
-	// 			float w = data[2];
-	// 			float h = data[3];
-	// 			// Bounding box coordinates.
-	// 			int left = int((cx - 0.5 * w) * x_factor);
-	// 			int top = int((cy - 0.5 * h) * y_factor);
-	// 			int width = int(w * x_factor);
-	// 			int height = int(h * y_factor);
-	// 			// Store good detections in the boxes vector.
-	// 			boxes.push_back(Rect(left, top, width, height));
-	// 		}
-	// 	}
-	// 	// Jump to the next column.
-	// 	data += 85;
-	// }
-
-	// // Perform Non Maximum Suppression and draw predictions.
-	// vector<int> indices;
-	// NMSBoxes(boxes, confidences, SCORE_THRESHOLD, NMS_THRESHOLD, indices);
-
-	char *result = new char[10];
-	// for (int i = 0; i < indices.size(); i++)
-	// {
-	// 	int idx = indices[i];
-	// 	Rect box = boxes[idx];
-
-	// 	int left = box.x;
-	// 	int top = box.y;
-	// 	int width = box.width;
-	// 	int height = box.height;
-
-	// 	// Get the label for the class name and its confidence.
-	// 	string label = format("%.2f", confidences[idx]);
-	// 	label = class_name[class_ids[idx]] + ":" + label;
-	// 	// Draw class labels.
-
-	// 	char *resultItem = new char[5];
-	// 	resultItem[0] = *convert_string_to_char_array(label);
-	// 	resultItem[1] = *convert_int_to_char_array(left);
-	// 	resultItem[1] = *convert_int_to_char_array(top);
-	// 	resultItem[1] = *convert_int_to_char_array(width);
-	// 	resultItem[1] = *convert_int_to_char_array(height);
-	// 	result[i] = *resultItem;
-	// };
-
-	return result;
+	return detected_objects;
 }
 
-#ifdef __cplusplus
+// Define the main function to be called from JavaScript
 extern "C"
 {
-#endif
-	char * EMSCRIPTEN_KEEPALIVE check_image(
-			unsigned char *img_data, int img_width, int img_height,
-			unsigned char *templ_data, int templ_width, int templ_height)
+	int EMSCRIPTEN_KEEPALIVE detectObjects(const unsigned char *imageData, int width, int height, float *boundingBoxes)
 	{
-		Mat img(img_height, img_width, CV_8UC4, img_data);
+		// Convert image data to OpenCV Mat
+		cv::Mat image(height, width, CV_8UC3, const_cast<unsigned char *>(imageData));
 
-		char *result = post_process(img);
-		return result;
+		// Perform object detection
+		std::vector<BoundingBox> detected_objects = perform_yolo_detection(image);
+
+		// Copy detection results to the provided buffer
+		int num_boxes = detected_objects.size();
+		for (int i = 0; i < num_boxes; ++i)
+		{
+			boundingBoxes[i * 5] = detected_objects[i].x;
+			boundingBoxes[i * 5 + 1] = detected_objects[i].y;
+			boundingBoxes[i * 5 + 2] = detected_objects[i].width;
+			boundingBoxes[i * 5 + 3] = detected_objects[i].height;
+			boundingBoxes[i * 5 + 4] = detected_objects[i].class_label;
+		}
+
+		return num_boxes;
 	}
-#ifdef __cplusplus
 }
-#endif

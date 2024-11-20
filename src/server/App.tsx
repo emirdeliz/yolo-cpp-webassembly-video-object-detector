@@ -5,7 +5,7 @@ const app = renderToString(App);
 const html = `
 	<html lang='en'>
 	<head>
-		<script src='/webassembly/object_detector_on_image_cpp.js' async defer type="text/javascript"></script>
+		<script src='/webassembly/yolo_cpp_webassembly_video_object_detector.js' async defer type="text/javascript"></script>
 		<script src='/client.js' async defer type="text/javascript"></script>
 		<style>
 			input {

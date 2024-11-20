@@ -1,0 +1,5 @@
+{
+  "name": "Existing Docker Compose (Extend)",
+  "image": "emirdeliz/cpp-opencv-node-emscripten",
+  "workspaceFolder": "/home/docker/apps"
+}

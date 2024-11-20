@@ -4,7 +4,6 @@ import { AppCoordinate, processImages } from '../../webassembly/src/utils';
 const AppBase: React.FC = () => {
 	const imgRef = useRef<HTMLImageElement | null>(null);
 	const [img, setImg] = useState<File>();
-	const [templ, setTempl] = useState<File>();
 	const [data, setData] = useState<AppCoordinate>();
 
 	const setImgFile = async (files: FileList|null, setState: Function) => { 
@@ -13,14 +12,14 @@ const AppBase: React.FC = () => {
 	}
 
 	useEffect(() => {
-		if (!img || !templ) {
+		if (!img) {
 			return;
 		}
 		(async () => {
-			const result = await processImages(img, templ);
+			const result = await processImages(img);
 			result && setData(result);
 		})();
-	}, [img, templ])
+	}, [img])
 
 	const imgUrl = useMemo(() => {
 		return img ? URL.createObjectURL(img) : '';
@@ -32,10 +31,6 @@ const AppBase: React.FC = () => {
 			<label>
 				Image base
 				<input type="file" accept=".png, .jpg, .jpeg" onChange={(e) => setImgFile(e.target.files, setImg)} />
-			</label>
-			<label>
-				Image to find
-				<input type="file" accept=".png, .jpg, .jpeg" onChange={(e) => setImgFile(e.target.files, setTempl)} />
 			</label>
 			<div className="result-container">
 				<img ref={imgRef} src={imgUrl} />

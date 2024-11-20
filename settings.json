@@ -1,0 +1,146 @@
+{
+    "workbench.colorCustomizations": {},
+    "editor.tokenColorCustomizations": {
+      "textMateRules": [
+        {
+          "scope": "keyword.other.dotenv",
+          "settings": {
+            "foreground": "#FF000000"
+          }
+        }
+      ]
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.tabSize": 2,
+    "editor.minimap.enabled": false,
+    "editor.fontFamily": "Geist Mono, JetBrains Mono, Fira Code",
+    "editor.fontSize": 14,
+    "cSpell.language": "en,pt,pt-BR,es-ES",
+    "cSpell.userWords": [
+      "cnpj",
+      "esnext",
+      "fontello",
+      "ilike",
+      "mobilel",
+      "nextjs",
+      "pathophisiology",
+      "pathophysiology",
+      "supabase",
+      "testid",
+      "textbox"
+    ],
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "[dockerfile]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "git.confirmSync": false,
+    "dev.containers.defaultFeatures": {},
+    "dev.containers.executeInWSL": true,
+    "dev.containers.workspaceMountConsistency": "consistent",
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "workbench.editorAssociations": {
+      "*.docker": "default"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "json.schemas": [
+    
+  
+    
+    ],
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vscode_custom_css.imports": [
+      "file:///D:/Programas/vscode_custom/vs-custom.css"
+    ],
+    "launch": {
+      "configurations": [],
+      "compounds": []
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "workbench.layoutControl.enabled": false,
+    "explorer.confirmPasteNative": false,
+    "workbench.iconTheme": "aut-icons",
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "terminal.integrated.fontSize": 12,
+    "workbench.settings.applyToAllProfiles": [
+    
+  
+    ],
+    "terminal.external.windowsExec": "C:\\Windows\\System32\\cmd.exe",
+    
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "source": "PowerShell",
+        "icon": "terminal-powershell"
+      },
+      "Command Prompt": {
+        "path": [
+          "${env:windir}\\Sysnative\\cmd.exe",
+          "${env:windir}\\System32\\cmd.exe"
+        ],
+        "args": [],
+        "icon": "terminal-cmd"
+      },
+      "Git Bash": {
+        "source": "Git Bash"
+      },
+      "Zsh": {
+        "path": "zsh"
+      },
+      "bash (MSYS2)": {
+        "path": "C:\\msys64\\usr\\bin\\bash.exe",
+        "args": [
+          "--login",
+          "-i"
+        ],
+        "env": {
+          "CHERE_INVOKING": "1"
+        }
+      }
+    },
+    "terminal.integrated.defaultProfile.windows": "Zsh",
+    "editor.fontLigatures": false,
+    "cmake.pinnedCommands": [
+      "workbench.action.tasks.configureTaskRunner",
+      "workbench.action.tasks.runTask"
+    ],
+    "cmake.showOptionsMovedNotification": false,
+    "yaml.schemas": {
+      "file:///c%3A/Users/Emir%20Liz/.vscode/extensions/atlassian.atlascode-3.0.10/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+    },
+    "redhat.telemetry.enabled": true,
+    "git.autofetch": true,
+    "atlascode.jira.jqlList": [
+      {
+        "id": "55b5aacf-2f9c-4632-8c27-2f97d424cb1f",
+        "enabled": true,
+        "name": "My entelgy Issues",
+        "query": "assignee = currentUser() AND resolution = Unresolved ORDER BY lastViewed DESC",
+        "siteId": "79a467a8-e187-492e-b148-62329a481eb8",
+        "monitor": true
+      }
+    ],
+    "dev.containers.experimentalLockfile": true,
+    "remote.WSL.debug": true,
+    "codeium.enableConfig": {
+      "*": true,
+      "plaintext": true
+    }
+  }

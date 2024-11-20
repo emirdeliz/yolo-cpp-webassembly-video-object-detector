@@ -1,0 +1,5 @@
+{
+  "C_Cpp.default.compilerPath": "/usr/bin/gcc-11",
+  "cmake.sourceDirectory": "/workspaces/yolo-cpp-webassembly-video-object-detector/webassembly",
+  "C_Cpp.errorSquiggles": "disabled"
+}
